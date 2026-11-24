@@ -2,9 +2,9 @@
 
 Gói này kiểm tra bản phần mềm cá nhân nối n8n → Video Studio → MoneyPrinterTurbo. Chỉ chạy một công việc với nội dung minh họa công khai, không lấy bất kỳ ảnh/video/tài liệu cá nhân nào từ máy Surface.
 
-## Sẵn sàng để bạn xem xét trước khi công khai
+## Bộ mã đã đăng theo sự đồng ý của chủ tài khoản
 
-Dự kiến thêm vào nhánh riêng `video-studio-cloud-trial` của kho công khai `Hungbidvhv/MoneyPrinterTurbo`, giữ nguyên nhánh main:
+Đã thêm vào nhánh riêng `video-studio-cloud-trial` của kho công khai `Hungbidvhv/MoneyPrinterTurbo`, giữ nguyên nhánh main:
 
 - `video-studio/studio.py`: backend tích hợp nhỏ, không kèm dữ liệu hay cấu hình cá nhân.
 - `video-studio/cloud/run_cloud_trial.py`: phép thử đầu-cuối chạy trên Linux của GitHub, từ chối chạy dựng trên Windows.
@@ -12,7 +12,7 @@ Dự kiến thêm vào nhánh riêng `video-studio-cloud-trial` của kho công 
 - `video-studio/cloud/README-CLOUD.md`: tài liệu này.
 - `.github/workflows/video-studio-trial.yml`: workflow kiểm thử có giới hạn thời gian.
 
-Không đưa `.env`, `.private`, cơ sở dữ liệu, lịch sử, nhật ký máy hoặc bất kỳ tệp sẵn có trên ổ C/D lên GitHub. Mã kiểm thử và video mẫu có thể được người khác truy cập vì kho là công khai. Tệp cục bộ chưa được đăng cho đến khi chủ tài khoản đồng ý.
+Không đưa `.env`, `.private`, cơ sở dữ liệu, lịch sử, nhật ký máy hoặc bất kỳ tệp cá nhân sẵn có trên ổ C/D lên GitHub. Mã kiểm thử và video mẫu có thể được người khác truy cập vì kho là công khai. Chỉ các tệp trong danh sách trên được đăng sau khi chủ tài khoản đồng ý.
 
 ## Nội dung và phí
 
@@ -33,10 +33,14 @@ Runner chuẩn Ubuntu của kho công khai được GitHub miễn phí theo tài
 
 Giọng đọc trực tuyến có thể bị giới hạn hoặc không truy cập được từ runner. Khi đó phải sửa kết nối và chạy lại kiểm thử chủ động, không giả báo thành công. Image MPT hiện dùng tag chính thức `latest`; kết quả ghi image ID thực tế để đối chiếu và khóa digest sau lần kiểm thử đạt.
 
-## Đã kiểm tra / chưa kiểm tra
+## Kết quả kiểm thử ngày 24/11/2026
 
-- Mã Python và bộ thử cục bộ kiểm tra kết nối local-material, từ chối chạy trên Surface và bảo vệ dữ liệu.
-- Chưa chạy Docker/n8n/MPT thật trên runner, chưa có MP4 thật cho đến khi đăng bộ kiểm thử và chạy được trên GitHub.
+- 21 kiểm tra cục bộ đạt, gồm kết nối local-material, từ chối chạy dựng trên Surface và bảo vệ dữ liệu.
+- Đã chạy n8n và MoneyPrinterTurbo thật trên runner: https://github.com/Hungbidvhv/MoneyPrinterTurbo/actions/runs/45435256550 . Toàn bộ bước đều thành công.
+- Video thật dài 16,61 giây, 1080×1920, H.264/AAC, 544.802 byte; kiểm tra giải mã cả hình và tiếng đã đạt. Không gọi LLM trả phí, không gọi Pexels. Thời lượng 30 giây trong giao diện chỉ là mục tiêu, không phải độ dài cắt cứng.
+- Artifact chỉ chứa `video-test.mp4` và `result.json`, lưu 1 ngày. Không có cấu hình, khóa hoặc dữ liệu cá nhân.
+- Gói ZIP có SHA-256 `48cb56b2c259d18f6079881c63edcc7cd65bbf026ad2fc5459802d25b6a9d21a`; bản tải về đã đối chiếu đúng mã này.
 - Chưa triển khai dịch vụ hoạt động 24/7. Hàng đợi demo trên Surface vẫn ở demo và không tự đổi sang chế độ tính phí.
 
 Nguồn: https://docs.github.com/en/billing/concepts/product-billing/github-actions ; https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#actions ; https://github.com/harry0703/MoneyPrinterTurbo
+
