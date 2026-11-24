@@ -1,0 +1,39 @@
+name: Video Studio - real integration test
+
+# A bounded software integration test, NOT a scheduled free video-rendering service.
+on:
+  workflow_dispatch:
+  push:
+    branches: [video-studio-cloud-trial]
+    paths: [video-studio/**, .github/workflows/video-studio-trial.yml]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: video-studio-one-trial
+  cancel-in-progress: false
+
+jobs:
+  real-video-integration:
+    if: github.repository == 'Hungbidvhv/MoneyPrinterTurbo'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate integration source
+        run: python3 -m py_compile video-studio/studio.py video-studio/cloud/run_cloud_trial.py video-studio/cloud/make_trial_art.py
+      - name: Run one real n8n and MoneyPrinterTurbo test
+        run: python3 video-studio/cloud/run_cloud_trial.py
+      - name: Save only the test video and sanitized result
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: video-studio-integration-result
+          path: |
+            video-studio/trial-results/video-test.mp4
+            video-studio/trial-results/result.json
+          if-no-files-found: error
+          retention-days: 1
